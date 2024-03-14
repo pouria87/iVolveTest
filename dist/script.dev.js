@@ -28,6 +28,12 @@ $(function () {
       // "zoom" | "pan" | "none" "both"
       valueAxis: 'zoom' // "zoom" | "pan" | "none" "both"
 
+    },
+    "export": {
+      printingEnabled: false,
+      enabled: true,
+      formats: ['PNG', 'JPEG'],
+      fileName: 'iVolve_exported_chart'
     }
   }).dxChart('instance');
   $('#datagrid').dxDataGrid({
