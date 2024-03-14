@@ -55,6 +55,13 @@ $(function () {
           type: 'fixedPoint',
           precision: 2,
         },
+        summaryType: 'sum',
+        calculateCustomSummary: function (options) {
+          if (options.name === 'sum') {
+            options.totalValue = 0;
+            options.totalValue += options.value;
+          }
+        },
       },
       {
         dataField: 'capital',
@@ -73,6 +80,17 @@ $(function () {
         groupIndex: 0,
       },
     ],
+    summary: {
+      totalItems: [
+        {
+          column: 'population',
+          summaryType: 'sum',
+          customizeText: function (data) {
+            return 'Total Population: ' + data.value;
+          },
+        },
+      ],
+    },
   });
 
   var transformedData = [];

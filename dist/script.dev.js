@@ -49,6 +49,13 @@ $(function () {
       format: {
         type: 'fixedPoint',
         precision: 2
+      },
+      summaryType: 'sum',
+      calculateCustomSummary: function calculateCustomSummary(options) {
+        if (options.name === 'sum') {
+          options.totalValue = 0;
+          options.totalValue += options.value;
+        }
       }
     }, {
       dataField: 'capital',
@@ -62,7 +69,16 @@ $(function () {
     }, {
       dataField: 'region',
       groupIndex: 0
-    }]
+    }],
+    summary: {
+      totalItems: [{
+        column: 'population',
+        summaryType: 'sum',
+        customizeText: function customizeText(data) {
+          return 'Total Population: ' + data.value;
+        }
+      }]
+    }
   });
   var transformedData = [];
   states.forEach(function (state) {
