@@ -42,16 +42,39 @@ $(function () {
     },
   });
 
+  var transformedData = [];
+  states.forEach(function (state) {
+    if (state.older === 'Yes') {
+      var populationOlderThan65 = state.population;
+    } else {
+      var populationYoungerThan65 = state.population;
+    }
+    transformedData.push({
+      state: state.name,
+      populationOlderThan65: populationOlderThan65,
+      populationYoungerThan65: populationYoungerThan65,
+      area: state.area,
+    });
+  });
+
   $('#bar-chart').dxChart({
     palette: 'bright',
-    dataSource: states,
-    title: 'Top 10 Most Populated States in US',
-    series: {
-      type: 'bar',
-      argumentField: 'name',
-      valueField: 'population',
-      colorField: 'region',
-    },
+    dataSource: transformedData,
+    title: 'Population Distribution by Age Group in US',
+    series: [
+      {
+        type: 'stackedBar',
+        argumentField: 'state',
+        valueField: 'populationOlderThan65',
+        name: 'Population Older Than 65 Years',
+      },
+      {
+        type: 'stackedBar',
+        argumentField: 'state',
+        valueField: 'populationYoungerThan65',
+        name: 'Population Younger Than 65 Years',
+      },
+    ],
     tooltip: {
       enabled: true,
       customizeTooltip: function (arg) {
