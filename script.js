@@ -42,19 +42,26 @@ $(function () {
     palette: 'bright',
     dataSource: states,
     title: 'Top 10 Most Populated States in US',
+    headerFilter: {
+      visible: true,
+      allowSelectAll: false,
+    },
 
     columns: [
       {
         dataField: 'name',
         caption: 'State Name',
+        allowHeaderFiltering: false,
       },
       {
         dataField: 'population',
         caption: 'Population',
+        allowHeaderFiltering: false,
         format: {
           type: 'fixedPoint',
           precision: 2,
         },
+
         summaryType: 'sum',
         calculateCustomSummary: function (options) {
           if (options.name === 'sum') {
@@ -66,14 +73,22 @@ $(function () {
       {
         dataField: 'capital',
         caption: 'Capital',
+        allowHeaderFiltering: false,
       },
       {
         dataField: 'area',
         caption: 'Area km²',
+        allowHeaderFiltering: false,
       },
       {
         dataField: 'older',
         caption: 'Older Than 65',
+        allowHeaderFiltering: false,
+      },
+      {
+        dataField: 'region',
+        caption: 'Region',
+        allowSelectAll: false,
       },
       {
         dataField: 'region',
