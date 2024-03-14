@@ -40,10 +40,10 @@ $(function () {
     palette: 'bright',
     dataSource: states,
     title: 'Top 10 Most Populated States in US',
-    headerFilter: {
-      visible: true,
-      allowSelectAll: false
-    },
+    // headerFilter: {
+    //   visible: true,
+    //   allowSelectAll: false,
+    // },
     columns: [{
       dataField: 'name',
       caption: 'State Name',
@@ -91,8 +91,21 @@ $(function () {
           return 'Total Population: ' + data.value;
         }
       }]
-    }
-  });
+    } // onRowClick: function (e) {
+    //   var rowData = e.data;
+    //   highlightBar(rowData.name, rowData.older);
+    // },
+
+  }); //   function highlightBar(stateName, stateOlder) {
+  //     states.forEach(function (state) {
+  //       if (state.name === stateName && state.older === stateOlder) {
+  //         return (state.highlight = true);
+  //       }
+  //       return (state.highlight = false);
+  //     });
+  //     chartInstance.render();
+  //   }
+
   var transformedData = [];
   states.forEach(function (state) {
     if (state.older === 'Yes') {
@@ -105,7 +118,8 @@ $(function () {
       state: state.name,
       populationOlderThan65: populationOlderThan65,
       populationYoungerThan65: populationYoungerThan65,
-      area: state.area
+      area: state.area,
+      highlight: state.highlight
     });
   });
   $('#bar-chart').dxChart({
@@ -131,7 +145,12 @@ $(function () {
         return {
           text: 'Area: ' + data.area + ' km² (' + areaInSquareMiles.toFixed(0) + ' mi²)'
         };
-      }
+      } //   customizePoint: function (pointInfo) {
+      //     if (pointInfo.value === 'California') {
+      //       return { color: '#FF69B4' };
+      //     }
+      //   },
+
     }
   });
 });
