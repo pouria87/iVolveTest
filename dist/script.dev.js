@@ -42,6 +42,16 @@ $(function () {
       argumentField: 'name',
       valueField: 'population',
       colorField: 'region'
+    },
+    tooltip: {
+      enabled: true,
+      customizeTooltip: function customizeTooltip(arg) {
+        var data = arg.point.data;
+        var areaInSquareMiles = data.area / 2.58998811;
+        return {
+          text: 'Area: ' + data.area + ' km² (' + areaInSquareMiles.toFixed(0) + ' mi²)'
+        };
+      }
     }
   });
 });
