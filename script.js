@@ -25,6 +25,10 @@ $(function () {
       legend: {
         visible: false,
       },
+      zoomAndPan: {
+        argumentAxis: 'zoom', // "zoom" | "pan" | "none" "both"
+        valueAxis: 'zoom', // "zoom" | "pan" | "none" "both"
+      },
     })
     .dxChart('instance');
 
