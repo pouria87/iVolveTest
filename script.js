@@ -51,6 +51,10 @@ $(function () {
       {
         dataField: 'population',
         caption: 'Population',
+        format: {
+          type: 'fixedPoint',
+          precision: 2,
+        },
       },
       {
         dataField: 'capital',

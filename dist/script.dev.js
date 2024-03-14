@@ -45,7 +45,11 @@ $(function () {
       caption: 'State Name'
     }, {
       dataField: 'population',
-      caption: 'Population'
+      caption: 'Population',
+      format: {
+        type: 'fixedPoint',
+        precision: 2
+      }
     }, {
       dataField: 'capital',
       caption: 'Capital'
