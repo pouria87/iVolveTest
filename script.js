@@ -42,10 +42,33 @@ $(function () {
     palette: 'bright',
     dataSource: states,
     title: 'Top 10 Most Populated States in US',
-    series: {
-      argumentField: 'name',
-      valueField: 'population',
-    },
+
+    columns: [
+      {
+        dataField: 'name',
+        caption: 'State Name',
+      },
+      {
+        dataField: 'population',
+        caption: 'Population',
+      },
+      {
+        dataField: 'capital',
+        caption: 'Capital',
+      },
+      {
+        dataField: 'area',
+        caption: 'Area',
+      },
+      {
+        dataField: 'older',
+        caption: 'Older Than 65',
+      },
+      {
+        dataField: 'region',
+        groupIndex: 0,
+      },
+    ],
   });
 
   var transformedData = [];
