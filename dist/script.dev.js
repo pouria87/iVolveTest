@@ -55,7 +55,7 @@ $(function () {
       caption: 'Capital'
     }, {
       dataField: 'area',
-      caption: 'Area'
+      caption: 'Area km²'
     }, {
       dataField: 'older',
       caption: 'Older Than 65'

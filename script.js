@@ -62,7 +62,7 @@ $(function () {
       },
       {
         dataField: 'area',
-        caption: 'Area',
+        caption: 'Area km²',
       },
       {
         dataField: 'older',
