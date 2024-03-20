@@ -40,10 +40,6 @@ $(function () {
     palette: 'bright',
     dataSource: states,
     title: 'Top 10 Most Populated States in US',
-    // headerFilter: {
-    //   visible: true,
-    //   allowSelectAll: false,
-    // },
     columns: [{
       dataField: 'name',
       caption: 'State Name',
@@ -94,21 +90,15 @@ $(function () {
           return 'Total Population: ' + data.value;
         }
       }]
-    } // onRowClick: function (e) {
-    //   var rowData = e.data;
-    //   highlightBar(rowData.name, rowData.older);
-    // },
-
-  }); //   function highlightBar(stateName, stateOlder) {
-  //     states.forEach(function (state) {
-  //       if (state.name === stateName && state.older === stateOlder) {
-  //         return (state.highlight = true);
-  //       }
-  //       return (state.highlight = false);
-  //     });
-  //     chartInstance.render();
-  //   }
-
+    },
+    onRowClick: function onRowClick(e) {
+      var rowData = e.data;
+      var correspondingData = transformedData.find(function (item) {
+        return item.state === rowData.name && (item.populationOlderThan65 === rowData.population || item.populationYoungerThan65 === rowData.population);
+      });
+      highlightBarChart(correspondingData);
+    }
+  }).dxDataGrid('instance');
   var transformedData = [];
   states.forEach(function (state) {
     if (state.older === 'Yes') {
@@ -121,8 +111,7 @@ $(function () {
       state: state.name,
       populationOlderThan65: populationOlderThan65,
       populationYoungerThan65: populationYoungerThan65,
-      area: state.area,
-      highlight: state.highlight
+      area: state.area
     });
   });
   $('#bar-chart').dxChart({
@@ -148,15 +137,33 @@ $(function () {
         return {
           text: 'Area: ' + data.area + ' km² (' + areaInSquareMiles.toFixed(0) + ' mi²)'
         };
-      } //   customizePoint: function (pointInfo) {
-      //     if (pointInfo.value === 'California') {
-      //       return { color: '#FF69B4' };
-      //     }
-      //   },
-
+      }
     }
   });
 });
+
+function highlightBarChart(data) {
+  console.log(data);
+  $('.highlighted').removeClass('highlighted');
+  var chartInstance = $('#bar-chart').dxChart('instance');
+  var series = chartInstance.getAllSeries();
+
+  for (var i = 0; i < series.length; i++) {
+    var seriesData = series[i].getAllPoints();
+
+    for (var j = 0; j < seriesData.length; j++) {
+      var point = seriesData[j];
+      console.log(point);
+
+      if (point.data.state === data.state && (point.data.populationOlderThan65 === data.populationOlderThan65 || point.data.populationYoungerThan65 === data.populationYoungerThan65)) {
+        point.select();
+        var barElement = point.fullState().element;
+        $(barElement).addClass('highlighted');
+      }
+    }
+  }
+}
+
 var zoomingData = [{
   arg: 10,
   y1: -12,

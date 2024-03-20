@@ -38,93 +38,87 @@ $(function () {
     })
     .dxChart('instance');
 
-  $('#datagrid').dxDataGrid({
-    palette: 'bright',
-    dataSource: states,
-    title: 'Top 10 Most Populated States in US',
-    // headerFilter: {
-    //   visible: true,
-    //   allowSelectAll: false,
-    // },
+  $('#datagrid')
+    .dxDataGrid({
+      palette: 'bright',
+      dataSource: states,
+      title: 'Top 10 Most Populated States in US',
 
-    columns: [
-      {
-        dataField: 'name',
-        caption: 'State Name',
-        allowHeaderFiltering: false,
-      },
-      {
-        dataField: 'population',
-        caption: 'Population',
-        allowHeaderFiltering: false,
-        format: {
-          type: 'fixedPoint',
-          precision: 2,
-        },
-
-        summaryType: 'sum',
-        calculateCustomSummary: function (options) {
-          if (options.name === 'sum') {
-            options.totalValue = 0;
-            options.totalValue += options.value;
-          }
-        },
-      },
-      {
-        dataField: 'capital',
-        caption: 'Capital',
-        allowHeaderFiltering: false,
-      },
-      {
-        dataField: 'area',
-        caption: 'Area km²',
-        allowHeaderFiltering: false,
-        customizeText: function (cellInfo) {
-          return cellInfo.value + ' km²';
-        },
-      },
-      {
-        dataField: 'older',
-        caption: 'Older Than 65',
-        allowHeaderFiltering: false,
-      },
-      {
-        dataField: 'region',
-        caption: 'Region',
-        allowSelectAll: false,
-      },
-      {
-        dataField: 'region',
-        groupIndex: 0,
-      },
-    ],
-    summary: {
-      totalItems: [
+      columns: [
         {
-          column: 'population',
+          dataField: 'name',
+          caption: 'State Name',
+          allowHeaderFiltering: false,
+        },
+        {
+          dataField: 'population',
+          caption: 'Population',
+          allowHeaderFiltering: false,
+          format: {
+            type: 'fixedPoint',
+            precision: 2,
+          },
+
           summaryType: 'sum',
-          customizeText: function (data) {
-            return 'Total Population: ' + data.value;
+          calculateCustomSummary: function (options) {
+            if (options.name === 'sum') {
+              options.totalValue = 0;
+              options.totalValue += options.value;
+            }
           },
         },
+        {
+          dataField: 'capital',
+          caption: 'Capital',
+          allowHeaderFiltering: false,
+        },
+        {
+          dataField: 'area',
+          caption: 'Area km²',
+          allowHeaderFiltering: false,
+          customizeText: function (cellInfo) {
+            return cellInfo.value + ' km²';
+          },
+        },
+        {
+          dataField: 'older',
+          caption: 'Older Than 65',
+          allowHeaderFiltering: false,
+        },
+        {
+          dataField: 'region',
+          caption: 'Region',
+          allowSelectAll: false,
+        },
+        {
+          dataField: 'region',
+          groupIndex: 0,
+        },
       ],
-    },
-    // onRowClick: function (e) {
-    //   var rowData = e.data;
-
-    //   highlightBar(rowData.name, rowData.older);
-    // },
-  });
-
-  //   function highlightBar(stateName, stateOlder) {
-  //     states.forEach(function (state) {
-  //       if (state.name === stateName && state.older === stateOlder) {
-  //         return (state.highlight = true);
-  //       }
-  //       return (state.highlight = false);
-  //     });
-  //     chartInstance.render();
-  //   }
+      summary: {
+        totalItems: [
+          {
+            column: 'population',
+            summaryType: 'sum',
+            customizeText: function (data) {
+              return 'Total Population: ' + data.value;
+            },
+          },
+        ],
+      },
+      onRowClick: function (e) {
+        var rowData = e.data;
+        var correspondingData = transformedData.find(function (item) {
+          return (
+            item.state === rowData.name &&
+            (item.populationOlderThan65 === rowData.population ||
+              item.populationYoungerThan65 === rowData.population)
+          );
+        });
+        highlightBarChart(correspondingData);
+      },
+    })
+    .dxDataGrid('instance');
 
   var transformedData = [];
   states.forEach(function (state) {
@@ -138,7 +132,6 @@ $(function () {
       populationOlderThan65: populationOlderThan65,
       populationYoungerThan65: populationYoungerThan65,
       area: state.area,
-      highlight: state.highlight,
     });
   });
 
@@ -174,14 +167,33 @@ $(function () {
             ' mi²)',
         };
       },
-      //   customizePoint: function (pointInfo) {
-      //     if (pointInfo.value === 'California') {
-      //       return { color: '#FF69B4' };
-      //     }
-      //   },
     },
   });
 });
+
+function highlightBarChart(data) {
+  console.log(data);
+  $('.highlighted').removeClass('highlighted');
+  var chartInstance = $('#bar-chart').dxChart('instance');
+  var series = chartInstance.getAllSeries();
+
+  for (var i = 0; i < series.length; i++) {
+    var seriesData = series[i].getAllPoints();
+    for (var j = 0; j < seriesData.length; j++) {
+      var point = seriesData[j];
+      console.log(point);
+      if (
+        point.data.state === data.state &&
+        (point.data.populationOlderThan65 === data.populationOlderThan65 ||
+          point.data.populationYoungerThan65 === data.populationYoungerThan65)
+      ) {
+        point.select();
+        var barElement = point.fullState().element;
+        $(barElement).addClass('highlighted');
+      }
+    }
+  }
+}
 
 var zoomingData = [
   { arg: 10, y1: -12, y2: 10, y3: 32 },
