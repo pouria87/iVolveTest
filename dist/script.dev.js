@@ -70,7 +70,10 @@ $(function () {
     }, {
       dataField: 'area',
       caption: 'Area km²',
-      allowHeaderFiltering: false
+      allowHeaderFiltering: false,
+      customizeText: function customizeText(cellInfo) {
+        return cellInfo.value + ' km²';
+      }
     }, {
       dataField: 'older',
       caption: 'Older Than 65',

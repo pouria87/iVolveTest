@@ -79,6 +79,9 @@ $(function () {
         dataField: 'area',
         caption: 'Area km²',
         allowHeaderFiltering: false,
+        customizeText: function (cellInfo) {
+          return cellInfo.value + ' km²';
+        },
       },
       {
         dataField: 'older',
