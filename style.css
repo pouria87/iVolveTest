@@ -1,12 +1,29 @@
-#chart {
-  height: 440px;
-  width: 100%;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  padding: 20px;
+  gap: 5px;
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  background-color: #efefef;
+}
+.chart {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-#datagrid {
-  height: 440px;
+.datagrid {
+  grid-column: 2;
+  grid-row: 1 / span 2;
 }
 
-#bar-chart {
-  height: 440px;
+.bar-chart {
+  grid-column: 1;
+  grid-row: 2;
+}
+.total-population {
+  min-width: 200px;
 }

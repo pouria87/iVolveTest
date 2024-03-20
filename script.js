@@ -100,6 +100,7 @@ $(function () {
           {
             column: 'population',
             summaryType: 'sum',
+            cssClass: "total-population",
             customizeText: function (data) {
               return 'Total Population: ' + data.value;
             },
@@ -172,7 +173,6 @@ $(function () {
 });
 
 function highlightBarChart(data) {
-  console.log(data);
   $('.highlighted').removeClass('highlighted');
   var chartInstance = $('#bar-chart').dxChart('instance');
   var series = chartInstance.getAllSeries();
@@ -181,7 +181,6 @@ function highlightBarChart(data) {
     var seriesData = series[i].getAllPoints();
     for (var j = 0; j < seriesData.length; j++) {
       var point = seriesData[j];
-      console.log(point);
       if (
         point.data.state === data.state &&
         (point.data.populationOlderThan65 === data.populationOlderThan65 ||
